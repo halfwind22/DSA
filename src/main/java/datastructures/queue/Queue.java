@@ -1,57 +1,58 @@
-package datastructures.stack;
+package datastructures.queue;
 
-import datastructures.stack.Node;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Stack {
+public class Queue {
 
     /*
-     * Implementing Stack using LinkedList
+     * Implementing Queue using LinkedList
        Insertion and Deletion from the head is O(1), where as Insertion and Deletion from the tail is O(1) and O(n)
-       So we do insertion and deletion from head to simulate LIFO
+       So we do insertion from tail and deletion from head to simulate FIFO
      */
 
 
     private int length;
-    Node top;
+    Node first;
+    Node last;
 
-    public Stack(int value) {
+    public Queue(int value) {
         Node node = new Node(value);
-        this.top = node;
+        this.first = node;
+        this.last = node;
         node.setNext(null);
         this.length += 1;
     }
 
-    public boolean push(int value) {
+    public boolean enqueue(int value) {
 
         if (this.length == 0) {
-            new Stack(value);
+            new Queue(value);
         } else {
             Node node = new Node(value);
-            node.setNext(this.top);
-            this.top = node;
+            this.last.setNext(node);
+            this.last = node;
             this.length += 1;
         }
 
         return true;
     }
 
-    public Node pop() {
+    public Node dequeue() {
         Node nodeToBePopped = null;
         if (this.length != 0) {
-            nodeToBePopped = this.top;
-            this.top = this.top.getNext();
+            nodeToBePopped = this.first;
+            this.first = this.first.getNext();
             nodeToBePopped.setNext(null);
             this.length -= 1;
         }
         return nodeToBePopped;
     }
 
-    public void displayStack() {
-        Node node = this.top;
+    public void displayQueue() {
+        Node node = this.first;
         while (node != null) {
             System.out.print(node);
             node = node.getNext();
