@@ -43,6 +43,7 @@ public class Stack {
         if (this.length != 0) {
             nodeToBePopped = this.top;
             this.top = this.top.getNext();
+            this.length -= 1;
         }
         return nodeToBePopped;
     }
