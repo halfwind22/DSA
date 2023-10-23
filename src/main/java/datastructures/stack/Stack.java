@@ -56,4 +56,5 @@ public class Stack {
         System.out.print("null");
         System.out.println();
     }
+
 }

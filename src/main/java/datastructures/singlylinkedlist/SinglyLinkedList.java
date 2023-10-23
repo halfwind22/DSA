@@ -250,4 +250,80 @@ public class SinglyLinkedList {
         return firstNode;
 
     }
+
+    public static Node mergeTwoLinkedListsEfficient(Node headNode1, Node headNode2) {
+        Node firstNode = null;
+        if (headNode1 == null && headNode2 == null) {
+            return null;
+        } else if (headNode1 == null) {
+            return headNode2;
+        } else if (headNode2 == null) {
+            return headNode1;
+        } else {
+
+            boolean headSet = false;
+            Node node = null;
+
+            while (headNode1 != null && headNode2 != null) {
+                if (headNode1.getValue() <= headNode2.getValue()) {
+                    if (!headSet) {
+                        node = new Node(headNode1.getValue());
+                        headSet = true;
+                        firstNode = node;
+                    } else {
+                        node.setNext(headNode1);
+                        node = node.getNext();
+                    }
+                    headNode1 = headNode1.getNext();
+                } else {
+                    if (!headSet) {
+                        node = new Node(headNode2.getValue());
+                        headSet = true;
+                        firstNode = node;
+                    } else {
+                        node.setNext(headNode2);
+                        node = node.getNext();
+                    }
+                    headNode2 = headNode2.getNext();
+
+                }
+            }
+
+            if (headNode1 == null) {
+                node.setNext(headNode2);
+            } else {
+                node.setNext(headNode1);
+            }
+
+        }
+        return firstNode;
+
+    }
+
+    public boolean detectCycles() {
+
+        /*
+         * Tortoise and hare algorithm
+         * */
+
+        if (this.head == null || this.head.getNext() == null) {
+            return false;
+        }
+        Node slowPtr = this.head;
+        Node fastPtr = this.head.getNext();
+
+        while (fastPtr != null) {
+            if (slowPtr == fastPtr) {
+                return true;
+            }
+            slowPtr = slowPtr.getNext();
+            if (fastPtr.getNext() != null) {
+                fastPtr = fastPtr.getNext().getNext();
+            } else {
+                return false;
+            }
+        }
+        return false;
+
+    }
 }
