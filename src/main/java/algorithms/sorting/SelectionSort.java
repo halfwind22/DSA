@@ -2,25 +2,30 @@ package algorithms.sorting;
 
 import java.util.Arrays;
 
-public class BubbleSort {
+public class SelectionSort {
+
     /*
-     * Based on the idea that after each iteration, the ith largest element is going to be in its correct position
+     * Based on the idea that after each iteration, the ith smallest element is going to be in its correct position
      * In each sub-iteration, we keep looking for that element which can be put into its correct place.
-     * Largest element bubble there way up towards the end of the array
+     *
      * */
     static int[] arr;
 
-    public BubbleSort(int[] arr) {
-        BubbleSort.arr = arr;
+    public SelectionSort(int[] arr) {
+        SelectionSort.arr = arr;
     }
 
     public static void sort() {
 
         for (int i = 0; i < arr.length; i++) {
-            for (int j = i; j < (arr.length - 1) - i; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    swap(j, j + 1);
+            int minIndex = i;
+            for (int j = i + 1; j < arr.length - 1; j++) {
+                if (arr[j]  < arr[minIndex]) {
+                    minIndex = j;
                 }
+            }
+            if (minIndex != i) {
+                swap(i, minIndex);
             }
         }
 
