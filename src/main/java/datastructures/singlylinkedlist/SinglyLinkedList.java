@@ -179,4 +179,75 @@ public class SinglyLinkedList {
         }
 
     }
+
+    public Node reverseLinkedList(Node headNode) {
+
+        if (headNode != null) {
+            Node after = headNode.getNext();
+            Node before = null;
+            Node temp = null;
+
+            while (after != null) {
+                headNode.setNext(before);
+                temp = after.getNext();
+                after.setNext(headNode);
+
+                before = headNode;
+                headNode = after;
+                after = temp;
+
+            }
+        }
+        return headNode;
+
+    }
+
+    public static Node mergeTwoLinkedLists(Node headNode1, Node headNode2) {
+        Node firstNode = null;
+        if (headNode1 == null && headNode2 == null) {
+            return null;
+        } else if (headNode1 == null) {
+            return headNode2;
+        } else if (headNode2 == null) {
+            return headNode1;
+        } else {
+
+            boolean headSet = false;
+            Node node = null;
+
+            while (headNode1 != null && headNode2 != null) {
+                if (headNode1.getValue() <= headNode2.getValue()) {
+                    if (!headSet) {
+                        node = new Node(headNode1.getValue());
+                        headSet = true;
+                        firstNode = node;
+                    } else {
+                        node.setNext(new Node(headNode1.getValue()));
+                        node = node.getNext();
+                    }
+                    headNode1 = headNode1.getNext();
+                } else {
+                    if (!headSet) {
+                        node = new Node(headNode2.getValue());
+                        headSet = true;
+                        firstNode = node;
+                    } else {
+                        node.setNext(new Node(headNode2.getValue()));
+                        node = node.getNext();
+                    }
+                    headNode2 = headNode2.getNext();
+
+                }
+            }
+
+            if (headNode1 == null && headNode2 != null) {
+                node.setNext(headNode2);
+            } else if (headNode2 == null) {
+                node.setNext(headNode1);
+            }
+
+        }
+        return firstNode;
+
+    }
 }
