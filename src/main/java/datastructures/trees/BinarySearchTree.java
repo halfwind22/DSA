@@ -4,6 +4,8 @@ import datastructures.trees.Node;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.security.cert.TrustAnchor;
+
 @Setter
 @Getter
 public class BinarySearchTree {
@@ -38,7 +40,7 @@ public class BinarySearchTree {
                 if (value == tNode.getValue()) {
                     return false;
                 }
-                if (tNode.getValue() < value) {
+                if (value < tNode.getValue()) {
                     if (tNode.getLchild() == null) {
                         tNode.setLchild(node);
                         this.level = height + 1;
@@ -59,6 +61,73 @@ public class BinarySearchTree {
         }
     }
 
+    public boolean recursiveInsertElement(int value) {
+        if (this.root == null) {
+            this.root = new Node(value);
+            this.root.setLchild(null);
+            this.root.setRchild(null);
+            this.level += 1;
+            return true;
+        } else {
+            return insert(this.root, value, 1);
+        }
+    }
+
+
+    private boolean insert(Node node, int value, int height) {
+        if (node.getValue() == value) {
+            return false;
+        } else if (value < node.getValue()) {
+            if (node.getLchild() == null) {
+                Node temp = new Node(value);
+                node.setLchild(temp);
+                this.level = height + 1;
+                return true;
+            } else {
+                return insert(node.getLchild(), value, height + 1);
+            }
+        } else {
+            if (node.getRchild() == null) {
+                Node temp = new Node(value);
+                node.setRchild(temp);
+                this.level = height + 1;
+                return true;
+
+            } else {
+                return insert(node.getRchild(), value, height + 1);
+            }
+        }
+
+    }
+
+    public Node recursiveInsertElementV2(int value) {
+        Node node = null;
+        if (this.root == null) {
+            this.root = new Node(value);
+            this.root.setLchild(null);
+            this.root.setRchild(null);
+            this.level += 1;
+            return this.root;
+        } else {
+            node = insertV2(this.root, value, 1);
+        }
+        return node;
+    }
+
+
+    private Node insertV2(Node node, int value, int height) {
+        if (node == null) {
+            this.level = height;
+            return new Node(value);
+        } else if (value < node.getValue()) {
+            node.setLchild(insertV2(node.getLchild(), value, height + 1));
+        } else if (value > node.getValue()) {
+            node.setRchild(insertV2(node.getRchild(), value, height + 1));
+        }
+        return node;
+    }
+
+
     public boolean containsElement(int value) {
         if (this.root == null) {
             return false;
@@ -67,7 +136,7 @@ public class BinarySearchTree {
             while (true) {
                 if (tNode.getValue() == value) {
                     return true;
-                } else if (tNode.getValue() < value) {
+                } else if (value < tNode.getValue()) {
                     if (tNode.getLchild() == null) {
                         return false;
                     }
@@ -82,7 +151,49 @@ public class BinarySearchTree {
         }
     }
 
-    public Node removeElement(int value) {
+    public boolean containsElementCleaner(int value) {
+        if (this.root != null) {
+            Node tNode = this.root;
+            while (tNode != null) {
+                if (tNode.getValue() < value) {
+                    tNode = tNode.getLchild();
+                } else if (tNode.getValue() > value) {
+                    tNode = tNode.getRchild();
+                } else {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean recursiveContains(int value) {
+        if (this.root == null) {
+            return false;
+        } else {
+            return contains(this.root, value);
+        }
+    }
+
+    private boolean contains(Node node, int value) {
+        if (node.getValue() == value) {
+            return true;
+        } else if (value < node.getValue()) {
+            if (node.getLchild() == null) {
+                return false;
+            }
+            return contains(node.getLchild(), value);
+
+        } else {
+            if (node.getRchild() == null) {
+                return false;
+            }
+            return contains(node.getRchild(), value);
+
+        }
+    }
+
+    public Node removeElementAndSubTree(int value) {
         Node parentnode = null;
         Node tNode = this.root;
         if (this.root == null) {
@@ -92,7 +203,7 @@ public class BinarySearchTree {
             return tNode;
         } else {
             while (true) {
-                if (tNode.getValue() < value) {
+                if (value < tNode.getValue()) {
                     if (tNode.getLchild() == null) {
                         return null;
                     }
@@ -117,18 +228,49 @@ public class BinarySearchTree {
         }
     }
 
-//    public void displayLinkedList() {
-//        Node node = this.root;
-//        System.out.println();
-//        while (node != null) {
-//            System.out.print(node);
-//            node = node.getRchild();
-//        }
-//        System.out.print(" null");
-//        System.out.println();
-//    }
-//
+    public Node removeElement(int value) {
+        if (this.root == null) {
+            return null;
+        } else {
+            return remove(this.root, null, value);
+        }
+
+    }
+
+    public Node remove(Node node, Node parentNode, int value) {
+
+        while (true) {
+            if (value < node.getValue()) {
+                return remove(node.getLchild(), node, value);
+            } else if (value > node.getValue()) {
+                return remove(node.getRchild(), node, value);
+            } else {
+                if (node.getLchild() != null && node.getRchild() == null) {
+                    parentNode.setRchild(node.getLchild());
+                    return node;
+                } else if (node.getLchild() == null && node.getRchild() != null) {
+                    parentNode.setLchild(node.getRchild());
+                    return node;
+                } else if (node.getLchild() == null && node.getRchild() == null) {
+                    return node;
+                } else {
+                    Node minNode = getMinValueFromRightSubTree(node);
+                    node.setValue(minNode.getValue());
+                    return node;
+                }
+            }
+        }
+    }
+
+    public Node getMinValueFromRightSubTree(Node node) {
+        Node minNode = null;
+        while (node.getRchild().getRchild() != null && node.getRchild().getLchild() != null) {
+            node = node.getRchild();
+        }
+        minNode = node.getLchild();
+        node.setLchild(null);
+        return minNode;
+    }
 
 }
-
 
