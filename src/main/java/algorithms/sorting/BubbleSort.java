@@ -6,7 +6,10 @@ public class BubbleSort {
     /*
      * Based on the idea that after each iteration, the ith largest element is going to be in its correct position
      * In each sub-iteration, we keep looking for that element which can be put into its correct place.
-     * Largest element bubble there way up towards the end of the array
+     * Largest element bubbles their way up towards the end of the array
+     *
+     * This is a basic sort that could be used when we are clear that the input array is going to be sorted / almost sorted
+     * log(n) algos like quick sort are inefficient when the input array is almost sorted
      * */
     static int[] arr;
 
@@ -26,11 +29,11 @@ public class BubbleSort {
 
     }
 
-    public static void swap(int a, int b) {
-        System.out.println("Finding a diff between positions:  " + a + " and " + b);
-        int temp = arr[a];
-        arr[a] = arr[b];
-        arr[b] = temp;
+    public static void swap(int firstPosition, int secondPosition) {
+        System.out.println("Finding a diff between positions:  " + firstPosition + " and " + secondPosition);
+        int temp = arr[firstPosition];
+        arr[firstPosition] = arr[secondPosition];
+        arr[secondPosition] = temp;
         System.out.println("After swapping:");
         display();
     }

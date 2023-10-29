@@ -2,6 +2,7 @@ package datastructures.arrays;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class ContainsDuplicate {
@@ -12,10 +13,10 @@ public class ContainsDuplicate {
     }
 
     static boolean checkForDuplicates(int[] arr) {
-        Map<Integer, Integer> map = new HashMap<>();
+        HashSet<Integer> set = new HashSet<>();
         for (int j : arr) {
-            if (!map.containsKey(j)) {
-                map.put(j, 1);
+            if (!set.contains(j)) {
+                set.add(j);
             } else {
                 return true;
             }
