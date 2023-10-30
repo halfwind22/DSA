@@ -232,44 +232,60 @@ public class BinarySearchTree {
         if (this.root == null) {
             return null;
         } else {
-            return remove(this.root, null, value);
+            return remove(this.root, null, value, null);
         }
 
     }
 
-    public Node remove(Node node, Node parentNode, int value) {
+    public Node remove(Node node, Node parentNode, int value, String direction) {
 
         while (true) {
-            if (value < node.getValue()) {
-                return remove(node.getLchild(), node, value);
+            if (node == null) {
+                return null;
+            } else if (value < node.getValue()) {
+                return remove(node.getLchild(), node, value, "left");
             } else if (value > node.getValue()) {
-                return remove(node.getRchild(), node, value);
+                return remove(node.getRchild(), node, value, "right");
             } else {
-                if (node.getLchild() != null && node.getRchild() == null) {
+                /*
+                 * At this point, I have reached the element tot be deleted
+                 * */
+
+                if (node.getLchild() == null && node.getRchild() == null) {
+                    // Leaf node
+                    if (direction.equalsIgnoreCase("left")) {
+                        parentNode.setLchild(null);
+                    } else if (direction.equalsIgnoreCase("right")) {
+                        parentNode.setRchild(null);
+                    }
+                    return node;
+                } else if (node.getLchild() != null && node.getRchild() == null) {
                     parentNode.setRchild(node.getLchild());
                     return node;
                 } else if (node.getLchild() == null && node.getRchild() != null) {
                     parentNode.setLchild(node.getRchild());
                     return node;
-                } else if (node.getLchild() == null && node.getRchild() == null) {
-                    return node;
                 } else {
-                    Node minNode = getMinValueFromRightSubTree(node);
+                    Node minNode = getMinValueFromRightSubTree(node, parentNode);
+                    Node dummyNode = new Node(node.getValue());
                     node.setValue(minNode.getValue());
-                    return node;
+                    return dummyNode;
                 }
             }
         }
     }
 
-    public Node getMinValueFromRightSubTree(Node node) {
-        Node minNode = null;
-        while (node.getRchild().getRchild() != null && node.getRchild().getLchild() != null) {
-            node = node.getRchild();
+    private Node getMinValueFromRightSubTree(Node temp, Node parentNode) {
+        /*
+         * Returns the min value from a subtree, which is always going to be leftmost leaf node of the subtree
+         * */
+        Node node = temp.getRchild();
+        while (node.getLchild() != null) {
+            parentNode = node;
+            node = node.getLchild();
         }
-        minNode = node.getLchild();
-        node.setLchild(null);
-        return minNode;
+        parentNode.setLchild(null);
+        return node;
     }
 
 }
