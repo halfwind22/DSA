@@ -9,7 +9,6 @@ public class BinarySearch {
 
         while (low <= high) {
             int mid = (low + high) / 2;
-            System.out.println("Mid is " + mid);
             if (arr[mid] > target) {
                 high = mid - 1;
             } else if (arr[mid] < target) {
