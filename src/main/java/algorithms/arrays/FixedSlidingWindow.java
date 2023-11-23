@@ -5,7 +5,7 @@ import java.util.HashSet;
 public class FixedSlidingWindow {
 
     /*
-     * Given an array , return true if there are 2 elements within a window of of size k that are equal
+     * Given an array , return true if there are 2 elements within a window of size k that are equal
      * Contains duplicate
      *
      *

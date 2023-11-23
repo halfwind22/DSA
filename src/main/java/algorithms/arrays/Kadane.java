@@ -26,7 +26,7 @@ public class Kadane {
                 }
 
             } else {
-                currSum = num;
+                currSum = 0;
                 maxSum = Math.max(maxSum, currSum);
             }
         }
@@ -64,12 +64,11 @@ public class Kadane {
                 }
 
             } else {
-                currSum = nums[i];
-                L = i;
+                currSum = 0;
+                L = R;
                 maxSum = Math.max(maxSum, currSum);
             }
         }
-        System.out.println(L);
         return Arrays.copyOfRange(nums, L, Math.min(R + 1, nums.length));
 
     }

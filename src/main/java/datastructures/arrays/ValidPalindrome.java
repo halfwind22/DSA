@@ -5,9 +5,9 @@ public class ValidPalindrome {
 
         char[] charArr = s.toCharArray();
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < charArr.length; i++) {
-            if (Character.isLetterOrDigit(charArr[i])) {
-                sb.append(Character.toLowerCase(charArr[i]));
+        for (char c : charArr) {
+            if (Character.isLetterOrDigit(c)) {
+                sb.append(Character.toLowerCase(c));
             }
         }
         String originalString = sb.toString();
