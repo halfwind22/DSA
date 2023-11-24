@@ -1,5 +1,8 @@
 package algorithms.arrays;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 public class SlidingWindowVariable {
     /*
      * Length of longest subarray having duplicate elements
@@ -72,5 +75,65 @@ public class SlidingWindowVariable {
         System.out.println("minR: " + minR);
 
         return minLengthSubArray == Integer.MAX_VALUE ? 0 : minLengthSubArray + 1;
+    }
+
+    public int lengthOfLongestSubstring(String s) {
+        // https://leetcode.com/problems/longest-substring-without-repeating-characters/
+        // "abcabcbb"
+        // 3
+        //"pwwkew"
+        //"wke"
+        //Keep adding unique elements until a duplicate is found
+        //Once a duplicate is found, and that duplicate is greater than L(this is imp becuase I am not deleting all elements before L)
+        // calculate max
+        // Get the next element from the first index of duplicate element >= L
+        // remove the latest occurence of the duplicate element
+        //Since sets have no indices, this sequential deletion is enabled for me by incrementing the L pointer.
+
+        int L = 0;
+        int longestSubstringSize = Integer.MIN_VALUE;
+
+        HashMap<Character, Integer> hashMap = new HashMap<>();
+        for (int R = 0; R < s.length(); R++) {
+            if (hashMap.containsKey(s.charAt(R)) && (hashMap.get(s.charAt(R)) >= L)) {
+                int previousIndex = hashMap.get(s.charAt(R));
+                longestSubstringSize = Math.max(longestSubstringSize, (R - L));
+                L = previousIndex + 1;
+                hashMap.remove(s.charAt(R));
+            }
+            hashMap.put(s.charAt(R), R);
+        }
+        longestSubstringSize = Math.max(longestSubstringSize, (s.length() - L));
+        return longestSubstringSize;
+    }
+
+    public int lengthOfLongestSubstringV2(String s) {
+        // https://leetcode.com/problems/longest-substring-without-repeating-characters/
+        // "abcabcbb"
+        // 3
+        //"pwwkew"
+        //"wke"
+        // Keep adding unique elements until a duplicate is found
+        //Once a duplicate is found, my best bet is to remove all elements until the duplicate element is removed
+        //Since sets have no indices, this sequential deletion is enabled for me by incrementing the L pointer.
+
+
+        int L = 0;
+        int longestSubstringSize = Integer.MIN_VALUE;
+
+        HashSet<Character> hashSet = new HashSet<>();
+        for (int R = 0; R < s.length(); R++) {
+            if (hashSet.contains(s.charAt(R))) {
+                while (hashSet.contains(s.charAt(R))) {
+                    hashSet.remove(s.charAt(L));
+                    L++;
+                }
+            }
+            hashSet.add(s.charAt(R));
+            longestSubstringSize = Math.max(longestSubstringSize, (R - L) + 1);
+
+        }
+
+        return longestSubstringSize == Integer.MIN_VALUE ? 0 : longestSubstringSize;
     }
 }
