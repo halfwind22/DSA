@@ -1,4 +1,4 @@
-package algorithms.linkedlist;
+package datastructures;
 
 
 import lombok.Data;
@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 public class LRUCache {
 
+    // Write modular code for remove/insert
     @Data
     class Node {
         int key;
