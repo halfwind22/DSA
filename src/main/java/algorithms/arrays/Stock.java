@@ -23,6 +23,7 @@ public class Stock {
     }
 
     public int maxProfit(int[] prices) {
+        //https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
         // Asuuming awareness about basic stock market ops, the point here really is that if the difference between ith day
         // and some day in the future is positive , we want to ensure that its greater than whatever we have got so far.
         // Else if negative, it means that we have stumbled upon something cheaper than the rate at which we are trying to buy
